@@ -11,7 +11,7 @@ import { updateBook, addBook } from '../../../lib/common';
 
 function BookForm({ book, validate }) {
   const userRating = book ? book.ratings.find((elt) => elt.userId === localStorage.getItem('userId'))?.grade : 0;
-
+  // const userRating = null;
   const [rating, setRating] = useState(0);
 
   const navigate = useNavigate();
