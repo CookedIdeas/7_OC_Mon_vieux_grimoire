@@ -1,4 +1,4 @@
-const Book = require('../models/Book');
+const Book = require('../models/BookSchema');
 
 exports.createBook = (req, res, next) => {
   const newBook = new Book({

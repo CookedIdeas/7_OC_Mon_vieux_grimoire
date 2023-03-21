@@ -10,6 +10,7 @@ const mongoPassword = `${process.env.MONGOATLAS_PASSWORD}`;
 // const { json } = require('express');
 
 const bookRoutes = require('./routes/bookRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 mongoose
   .connect(
@@ -36,5 +37,6 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use('/api/books', bookRoutes);
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
