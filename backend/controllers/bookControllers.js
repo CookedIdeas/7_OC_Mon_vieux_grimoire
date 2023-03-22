@@ -25,8 +25,8 @@ exports.getAllBooks = (req, res, next) => {
 };
 
 exports.getOneBook = (req, res, next) => {
-  Book.find({ _id: req.params.id })
-    .then((book) => res.status(200).json(book[0]))
+  Book.findOne({ _id: req.params.id })
+    .then((book) => res.status(200).json(book))
     .catch((error) => res.status(404).json({ error }));
 };
 
@@ -124,4 +124,19 @@ exports.rateBook = (req, res, next) => {
       }
     })
     .catch((error) => res.status(500).json({ error }));
+};
+
+exports.bestRatings = (req, res, next) => {
+  Book.find()
+    .then((books) => {
+      //sort books by average rating from best to lamest
+      const sortedBooks = books.sort((a, b) => {
+        return b.averageRating - a.averageRating;
+      });
+
+      // keep the first 3 books and send them to front
+      const best3Books = sortedBooks.slice(0, 3);
+      res.status(200).json(best3Books);
+    })
+    .catch((error) => res.status(400).json({ error }));
 };
