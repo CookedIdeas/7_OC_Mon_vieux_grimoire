@@ -64,7 +64,7 @@ function SignIn({ setUser }) {
       }
       setNotification({ error: false, message: 'Votre compte a bien été créé, vous pouvez vous connecter' });
     } catch (err) {
-      setNotification({ error: true, message: err.message });
+      setNotification({ error: true, message: err.message === 'Request failed with status code 403' ? 'Request failed with status code 403 : Votre mot de passe doit faire entre 8 et 20 charactères, avec au minimum une minuscule, une majuscule, un chiffre' : err.message });
       console.log('Some error occured during signing up: ', err);
     } finally {
       setIsLoading(false);
