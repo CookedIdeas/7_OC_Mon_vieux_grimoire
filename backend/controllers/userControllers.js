@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 
 //Get .env variables
@@ -19,8 +19,8 @@ exports.signup = (req, res, next) => {
       } else {
         //pas d'utilisateur déjà inscrit avec le même email
         //-> on peut inscrire le nouvel utilisateur
-        bcrypt
-          .hash(req.body.password, 10)
+        argon2
+          .hash(req.body.password)
           .then((hash) => {
             const newUser = new User({
               email: req.body.email,
@@ -45,8 +45,8 @@ exports.login = (req, res, next) => {
       if (user === null) {
         res.status(401).json({ message: 'Paire identifiant/mdp incorrecte' });
       } else {
-        bcrypt
-          .compare(req.body.password, user.password)
+        argon2
+          .verify(user.password, req.body.password)
           .then((valid) => {
             if (!valid) {
               res
@@ -61,7 +61,7 @@ exports.login = (req, res, next) => {
               });
             }
           })
-          .catch((error) => res.status(500).json({ error }));
+          .catch((error) => res.status(501).json({ error }));
       }
     })
     .catch((error) => res.status(500).json({ error }));
