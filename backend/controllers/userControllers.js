@@ -13,10 +13,8 @@ const User = require('../models/UserSchema');
 function checkPassword(input) {
   var pswdRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/;
   if (input.match(pswdRegex)) {
-    console.log(true);
     return true;
   } else {
-    console.log(false);
     return false;
   }
 }
@@ -24,7 +22,6 @@ function checkPassword(input) {
 // ========== USER CONTROLLERS ========== //
 
 exports.signup = (req, res, next) => {
-  console.log('signup');
   //d'abord, on cherche un potentiel utilisateur déjà inscrit avec le même email
   const oldUser = User.findOne({ email: req.body.email })
     .then((oldUser) => {
@@ -37,22 +34,14 @@ exports.signup = (req, res, next) => {
         //-> on peut inscrire le nouvel utilisateur
 
         // on vérifie que le mdp fait bien plus de 8 charactères (max 20) avec minimum une minuscule, une majuscule, un chiffre
-        console.log('no old user');
-        console.log(checkPassword(req.body.password));
         if (!checkPassword(req.body.password)) {
-          // return res.status(403).json({
-          //   message:
-          //     'Votre mot de passe doit faire entre 8 et 20 charactères, avec au minimum une minuscule, une majuscule, un chiffre',
-          // });
-          return res.json(
-            {
-              success: false,
-              error:
-                'Votre mot de passe doit faire entre 8 et 20 charactères, avec au minimum une minuscule, une majuscule, un chiffre',
-            },
-            403
-          );
+          // le mdp n'est pas assez sécurisé -> res.status(403) -> affiche message dans front
+          return res.status(403).json({
+            message:
+              'Votre mot de passe doit faire entre 8 et 20 charactères, avec au minimum une minuscule, une majuscule, un chiffre',
+          });
         } else {
+          // le mdp est assez complexe -> hachage avec argon2 puis enregistrement du nvel user
           argon2
             .hash(req.body.password)
             .then((hash) => {

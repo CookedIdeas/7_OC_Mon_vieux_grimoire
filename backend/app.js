@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 const path = require('path');
 
@@ -22,6 +23,14 @@ mongoose
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 const app = express();
+
+// secure http headers with helmet
+// allow cross-origin resource policy to allow access to images stored on localhost 4000
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
