@@ -2,16 +2,8 @@ const Book = require('../models/BookSchema');
 const fs = require('fs');
 const validator = require('validator');
 const sanitize = require('mongo-sanitize');
-const {
-  body,
-  validationResult,
-  checkSchema,
-  check,
-} = require('express-validator');
-const multer = require('multer');
+const { body, validationResult, check } = require('express-validator');
 const logger = require('../logger');
-const parseRequest = require('parse-request');
-const mongoSanitize = require('express-mongo-sanitize');
 
 // ============= CHECK VALIDITY OF ITEM ID AND SANITIZE IT ============= //
 

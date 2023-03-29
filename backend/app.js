@@ -2,22 +2,16 @@ const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const path = require('path');
-const contentType = require('content-type');
-const getRawBody = require('raw-body');
 const filter = require('content-filter');
-const sanitize = require('mongo-sanitize');
 const toobusy = require('toobusy-js');
 const logger = require('./logger');
 const hpp = require('hpp');
-const mongoSanitize = require('express-mongo-sanitize');
 
 //Get .env variables
 const dotenv = require('dotenv');
 dotenv.config();
 const mongoUserName = `${process.env.MONGOATLAS_USERNAME}`;
 const mongoPassword = `${process.env.MONGOATLAS_PASSWORD}`;
-
-// const { json } = require('express');
 
 const bookRoutes = require('./routes/bookRoutes');
 const userRoutes = require('./routes/userRoutes');
