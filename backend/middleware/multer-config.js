@@ -7,17 +7,33 @@ const MIME_TYPES = {
   'image/png': 'png',
 };
 
-const storage = multer.diskStorage({
+const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'images');
   },
   filename: (req, file, callback) => {
+    // return;
     const imageName = file.originalname.split(' ').join('_');
     const imageNameNoExtension = path.parse(imageName).name;
     const extension = MIME_TYPES[file.mimetype];
-    console.log(imageName, extension);
     callback(null, imageNameNoExtension + '_' + Date.now() + '.' + extension);
   },
 });
 
-module.exports = multer({ storage }).single('image');
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/png'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+module.exports = multer({
+  dest: 'images',
+  storage: fileStorage,
+  fileFilter: fileFilter,
+}).single('image');

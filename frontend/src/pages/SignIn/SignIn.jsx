@@ -8,6 +8,19 @@ import { storeInLocalStorage } from '../../lib/common';
 import { ReactComponent as Logo } from '../../images/Logo.svg';
 import styles from './SignIn.module.css';
 
+const errorMsgDisplay = (errResponseStatus, errMsg) => {
+  if (errResponseStatus === 403) {
+    return 'Request failed with status code 403 : Votre mot de passe doit faire entre 8 et 25 charactères, avec au minimum une minuscule, une majuscule, un chiffre. $, { et } sont interdits.';
+  }
+  if (errResponseStatus === 430) {
+    return 'Request failed with status code 430 : Trop de tentatives de connexion. Veuillez patienter 5 minutes.';
+  }
+  if (errResponseStatus === 429) {
+    return 'Request failed with status code 429 : Trop de tentatives de connexion. Veuillez patienter 1 journée.';
+  }
+  return errMsg;
+};
+
 function SignIn({ setUser }) {
   const navigate = useNavigate();
   const { user, authenticated } = useUser();
@@ -39,8 +52,8 @@ function SignIn({ setUser }) {
         navigate('/');
       }
     } catch (err) {
-      console.log(err);
-      setNotification({ error: true, message: err.message });
+      console.log(err.response.status);
+      setNotification({ error: true, message: errorMsgDisplay(err.response.status, err.message) });
       console.log('Some error occured during signing in: ', err);
     } finally {
       setIsLoading(false);
@@ -64,7 +77,8 @@ function SignIn({ setUser }) {
       }
       setNotification({ error: false, message: 'Votre compte a bien été créé, vous pouvez vous connecter' });
     } catch (err) {
-      setNotification({ error: true, message: err.message === 'Request failed with status code 403' ? 'Request failed with status code 403 : Votre mot de passe doit faire entre 8 et 20 charactères, avec au minimum une minuscule, une majuscule, un chiffre' : err.message });
+      console.log(err);
+      setNotification({ error: true, message: errorMsgDisplay(err.response.status, err.message) });
       console.log('Some error occured during signing up: ', err);
     } finally {
       setIsLoading(false);

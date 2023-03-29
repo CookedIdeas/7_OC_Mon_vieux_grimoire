@@ -98,11 +98,15 @@ export async function rateBook(id, userId, rating) {
   };
 
   try {
-    const response = await axios.post(`${API_ROUTES.BOOKS}/${id}/rating`, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+    const response = await axios.post(
+      `${API_ROUTES.BOOKS}/${id}/rating`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       },
-    });
+    );
     const book = response.data;
     // eslint-disable-next-line no-underscore-dangle
     book.id = book._id;
@@ -121,10 +125,12 @@ export async function addBook(data) {
     author: data.author,
     year: data.year,
     genre: data.genre,
-    ratings: [{
-      userId,
-      grade: data.rating ? parseInt(data.rating, 10) : 0,
-    }],
+    ratings: [
+      {
+        userId,
+        grade: data.rating ? parseInt(data.rating, 10) : 0,
+      },
+    ],
     averageRating: parseInt(data.rating, 10),
   };
   const bodyFormData = new FormData();
@@ -132,17 +138,30 @@ export async function addBook(data) {
   bodyFormData.append('image', data.file[0]);
 
   try {
-    return await axios({
+    await axios({
       method: 'post',
-      url: `${API_ROUTES.BOOKS}`,
-      data: bodyFormData,
+      url: `${API_ROUTES.VALIDATE_BOOKS_INPUTS}`,
+      data: book,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
+    try {
+      return await axios({
+        method: 'post',
+        url: `${API_ROUTES.BOOKS}`,
+        data: bodyFormData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      return { error: true, message: err.message };
+    }
   } catch (err) {
     console.error(err);
-    return { error: true, message: err.message };
+    return { error: true, message: `erreur(s) suivante(s) : ${err.response.data.errors.map((error) => error.msg)}, ` };
   }
 }
 
@@ -167,17 +186,45 @@ export async function updateBook(data, id) {
   }
 
   try {
-    const newBook = await axios({
-      method: 'put',
-      url: `${API_ROUTES.BOOKS}/${id}`,
-      data: newData,
+    await axios({
+      method: 'post',
+      url: `${API_ROUTES.VALIDATE_BOOKS_INPUTS}`,
+      data: book,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
-    return newBook;
+    try {
+      const newBook = await axios({
+        method: 'put',
+        url: `${API_ROUTES.BOOKS}/${id}`,
+        data: newData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      return newBook;
+    } catch (err) {
+      console.error(err);
+      return { error: true, message: err.message };
+    }
   } catch (err) {
     console.error(err);
-    return { error: true, message: err.message };
+    return { error: true, message: `erreur(s) suivante(s) : ${err.response.data.errors.map((error) => error.msg)}, ` };
   }
+
+  // try {
+  //   const newBook = await axios({
+  //     method: 'put',
+  //     url: `${API_ROUTES.BOOKS}/${id}`,
+  //     data: newData,
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //     },
+  //   });
+  //   return newBook;
+  // } catch (err) {
+  //   console.error(err);
+  //   return { error: true, message: err.message };
+  // }
 }
