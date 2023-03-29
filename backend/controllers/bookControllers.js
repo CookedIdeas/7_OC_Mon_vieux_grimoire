@@ -29,26 +29,24 @@ const checkAndSanitizeBookId = (idFromParams) => {
 };
 
 exports.validateBook = (req, res, next) => {
-  // console.log(req.body);
-  const submittedBook = req.body;
-  mongoSanitize.sanitize({ ...submittedBook });
-  console.log(submittedBook);
-  // for (let [key, value] of Object.entries(submittedBook)) {
-  //   // value = sanitize(String(value));
-  //   // console.log(sanitize(String(value)));
-  //   console.log(sanitize(value));
-  //   console.log(value.sanitize());
-  // }
-  // console.log(submittedBook);
   //SECURITY : validate, trim, escape and sanitize inputs with express-validator checkSchema method
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(403).json({ errors: errors.array() });
   } else {
-    // console.log('no errors');
-    // console.log(req.body);
-    return;
     return res.status(200).json({ message: 'inputs are ok !' });
+  }
+};
+
+exports.validateImageSize = (req, res, next) => {
+  const reqSize = parseInt(req.headers['content-length']);
+  const maxSize = 4194304; //4Mo
+  if (reqSize <= maxSize) {
+    next();
+  } else {
+    return res
+      .status(430)
+      .json({ message: 'Votre image est trop volumineuse. Limite max : 4Mo' });
   }
 };
 

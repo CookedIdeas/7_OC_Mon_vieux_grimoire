@@ -10,6 +10,16 @@ function formatBooks(bookArray) {
   });
 }
 
+const getErrorMessage = (error) => {
+  if (error.response.data.errors) {
+    return error.response.data.errors.map((err) => err.msg);
+  }
+  if (error.response.data.message) {
+    return error.response.data.message;
+  }
+  return `${error.message} : des charactères interdits ($, {, }, &&,...) sont présents dans vos champs. Veuillez les supprimer.`;
+};
+
 export function storeInLocalStorage(token, userId) {
   localStorage.setItem('token', token);
   localStorage.setItem('userId', userId);
@@ -157,11 +167,11 @@ export async function addBook(data) {
       });
     } catch (err) {
       console.error(err);
-      return { error: true, message: err.message };
+      return { error: true, message: `erreur(s) suivante(s) : ${getErrorMessage(err)}` };
     }
   } catch (err) {
     console.error(err);
-    return { error: true, message: `erreur(s) suivante(s) : ${err.response.data.errors.map((error) => error.msg)}, ` };
+    return { error: true, message: `erreur(s) suivante(s) : ${getErrorMessage(err)}` };
   }
 }
 
@@ -206,25 +216,10 @@ export async function updateBook(data, id) {
       return newBook;
     } catch (err) {
       console.error(err);
-      return { error: true, message: err.message };
+      return { error: true, message: `erreur(s) suivante(s) : ${getErrorMessage(err)}` };
     }
   } catch (err) {
     console.error(err);
-    return { error: true, message: `erreur(s) suivante(s) : ${err.response.data.errors.map((error) => error.msg)}, ` };
+    return { error: true, message: `erreur(s) suivante(s) : ${getErrorMessage(err)}` };
   }
-
-  // try {
-  //   const newBook = await axios({
-  //     method: 'put',
-  //     url: `${API_ROUTES.BOOKS}/${id}`,
-  //     data: newData,
-  //     headers: {
-  //       Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //     },
-  //   });
-  //   return newBook;
-  // } catch (err) {
-  //   console.error(err);
-  //   return { error: true, message: err.message };
-  // }
 }

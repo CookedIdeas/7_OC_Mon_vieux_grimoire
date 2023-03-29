@@ -17,7 +17,13 @@ router.post(
   bookControllers.validateBook
 );
 
-router.post('/', auth, multer, bookControllers.createBook);
+router.post(
+  '/',
+  auth,
+  bookControllers.validateImageSize,
+  multer,
+  bookControllers.createBook
+);
 
 router.get('/', bookControllers.getAllBooks);
 
@@ -26,8 +32,8 @@ router.get('/:id', bookControllers.getOneBook);
 router.put(
   '/:id',
   auth,
+  bookControllers.validateImageSize,
   multer,
-  //   checkSchema(inputsValidation.validatorBookSchema),
   bookControllers.updateBook
 );
 

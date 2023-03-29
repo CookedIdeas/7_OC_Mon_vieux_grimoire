@@ -72,36 +72,15 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: '1kb' }));
 app.use(express.urlencoded({ limit: '1kb', extended: false }));
 
-app.use(
-  mongoSanitize({
-    replaceWith: '_',
-  })
-);
-
 // SECURITY : prevent NoSQL injection -> ne permet pas d'envoyer "{" ou "$" etc...
 // blacklist from https://github.com/cr0hn/nosqlinjection_wordlists
-// let blackList = ['$', '{', '&&', '||', '%00', "';sleep(5000);"];
-// let filterOptions = {
-//   urlBlackList: blackList,
-//   bodyBlackList: blackList,
-// };
-// app.use(filter(filterOptions));
+let blackList = ['$', '{', '&&', '||', '%00', "';sleep(5000);"];
+let filterOptions = {
+  urlBlackList: blackList,
+  bodyBlackList: blackList,
+};
+app.use(filter(filterOptions));
 
-// app.use(
-//   mongoSanitize({
-//     replaceWith: '_',
-//   })
-// );
-// app.use(mongoSanitize());
-// app.use(
-//   mongoSanitize({
-//     onSanitize: ({ req, key }) => {
-//       console.warn(`This request[${key}] is sanitized`, req);
-//     },
-//   })
-// );
-
-// app.use(express.json());
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
