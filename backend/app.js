@@ -50,7 +50,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', '*'); //SECURITY : à modifier avec le nom de domaine final de mon vieux grimoire
   res.setHeader(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
@@ -68,7 +68,7 @@ app.use(express.urlencoded({ limit: '1kb', extended: false }));
 
 // SECURITY : prevent NoSQL injection -> ne permet pas d'envoyer "{" ou "$" etc...
 // blacklist from https://github.com/cr0hn/nosqlinjection_wordlists
-let blackList = ['$', '{', '&&', '||', '%00', "';sleep(5000);"];
+let blackList = ['$', '{', '&&', '||', '%00', "';sleep(5000);", '=='];
 let filterOptions = {
   urlBlackList: blackList,
   bodyBlackList: blackList,

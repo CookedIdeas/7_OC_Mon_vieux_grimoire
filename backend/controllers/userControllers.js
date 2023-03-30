@@ -35,7 +35,7 @@ exports.signup = (req, res, next) => {
             'verbose',
             `user : ${oldUser._id}/${oldUser.email} is trying to signin again`
           );
-          return res.status(409).json({ message: 'There was an error' });
+          return res.status(500).json({ error });
         } else {
           //pas d'utilisateur déjà inscrit avec le même email
           //-> on peut inscrire le nouvel utilisateur
@@ -55,7 +55,6 @@ exports.signup = (req, res, next) => {
                 .catch((error) => res.status(400).json({ error }));
             })
             .catch((error) => res.status(500).json({ error }));
-          // }
         }
       })
       .catch((error) => res.status(500).json({ error }));
@@ -97,12 +96,12 @@ exports.login = async (req, res, next) => {
                 res.status(200).json({
                   userId: user._id,
                   token: jwt.sign({ userId: user._id }, tokenRandomSecret, {
-                    expiresIn: '24h',
+                    expiresIn: '4h',
                   }),
                 });
               }
             })
-            .catch((error) => res.status(501).json({ error }));
+            .catch((error) => res.status(500).json({ error }));
         }
       })
       .catch((error) => res.status(500).json({ error }));

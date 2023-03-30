@@ -1,5 +1,5 @@
 const { check, checkSchema } = require('express-validator');
-const sanitize = require('mongo-sanitize');
+// const sanitize = require('mongo-sanitize');
 
 exports.loginValidator = [
   check('email', 'Username Must Be an Email Address')
