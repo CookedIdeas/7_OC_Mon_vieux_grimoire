@@ -61,3 +61,7 @@
 {"level":"verbose","message":"user : 641db11064189fba78df876e/marc@test.fr has used a wrong password","service":"your-service-name","timestamp":"2023-03-29 12:31:28"}
 {"level":"verbose","message":"user : 641db11064189fba78df876e/marc@test.fr has used a wrong password","service":"your-service-name","timestamp":"2023-03-29 13:53:45"}
 {"level":"verbose","message":"user : 641c14df7460ada034568af5/lionel@test.fr is trying to signin again","service":"your-service-name","timestamp":"2023-03-30 09:26:30"}
+{"level":"verbose","message":"user : frank@test.fr submitted a wrong signup form","service":"your-service-name","timestamp":"2023-03-30 11:07:15"}
+{"level":"verbose","message":"user : 642556b08d131e2fed6fd517/frank@test.fr is trying to signin again","service":"your-service-name","timestamp":"2023-03-30 11:30:28"}
+{"level":"verbose","message":"user : frank@test.fr submitted a wrong signup form","service":"your-service-name","timestamp":"2023-03-30 11:42:56"}
+{"level":"verbose","message":"user : gab@test.fr submitted a wrong login form","service":"your-service-name","timestamp":"2023-03-31 14:42:34"}

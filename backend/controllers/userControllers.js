@@ -66,7 +66,6 @@ exports.login = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    console.log(req.body);
     logger.log(
       'verbose',
       `user : ${req.body.email} submitted a wrong login form`
@@ -79,6 +78,10 @@ exports.login = async (req, res, next) => {
     User.findOne({ email: email })
       .then((user) => {
         if (user === null) {
+          logger.log(
+            'verbose',
+            `user : ${user} is trying to connect but doesn't exist`
+          );
           res.status(401).json({ message: 'Paire identifiant/mdp incorrecte' });
         } else {
           argon2

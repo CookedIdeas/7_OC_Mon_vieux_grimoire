@@ -14,7 +14,9 @@ module.exports = (req, res, next) => {
   if (!token) {
     logger.log(
       'verbose',
-      `A jwt is missing in a request asking for it. req.headers: ${req.headers}`
+      `A jwt is missing in a request asking for it. req.headers: ${JSON.stringify(
+        req.headers
+      )}`
     );
     res.status(403).json({ error });
   }

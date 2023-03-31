@@ -15,7 +15,6 @@ router.post(
   '/login',
   limitAttempts.loginAttemptsLimiterSlowBruteForce,
   limitAttempts.loginAttemptsLimiter,
-
   inputsValidators.loginValidator,
   userControllers.login
 );

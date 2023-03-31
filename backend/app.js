@@ -68,10 +68,11 @@ app.use(express.urlencoded({ limit: '1kb', extended: false }));
 
 // SECURITY : prevent NoSQL injection -> ne permet pas d'envoyer "{" ou "$" etc...
 // blacklist from https://github.com/cr0hn/nosqlinjection_wordlists
-let blackList = ['$', '{', '&&', '||', '%00', "';sleep(5000);", '=='];
+let blackList = ['$', '{', '&&', '||', '%00', "';sleep(5000);", '==', 'query'];
 let filterOptions = {
   urlBlackList: blackList,
   bodyBlackList: blackList,
+  bodyMessage: 'A forbidden expression has been found in form data: ',
 };
 app.use(filter(filterOptions));
 
