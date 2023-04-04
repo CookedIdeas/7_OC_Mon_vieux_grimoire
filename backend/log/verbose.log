@@ -65,3 +65,8 @@
 {"level":"verbose","message":"user : 642556b08d131e2fed6fd517/frank@test.fr is trying to signin again","service":"your-service-name","timestamp":"2023-03-30 11:30:28"}
 {"level":"verbose","message":"user : frank@test.fr submitted a wrong signup form","service":"your-service-name","timestamp":"2023-03-30 11:42:56"}
 {"level":"verbose","message":"user : gab@test.fr submitted a wrong login form","service":"your-service-name","timestamp":"2023-03-31 14:42:34"}
+{"level":"verbose","message":"user : 641c144cb38e8209e060fa16/gabriel@test.fr has used a wrong password","service":"your-service-name","timestamp":"2023-04-04 09:17:27"}
+{"level":"verbose","message":"user : 641c144cb38e8209e060fa16/gabriel@test.fr is trying to signin again","service":"your-service-name","timestamp":"2023-04-04 09:17:30"}
+{"level":"verbose","message":"user : jean@test.fr submitted a wrong signup form","service":"your-service-name","timestamp":"2023-04-04 09:33:24"}
+{"level":"verbose","message":"user : 64253a8fae3f78191b22f306/lionel@test.fr is trying to signin again","service":"your-service-name","timestamp":"2023-04-04 10:04:22"}
+{"level":"verbose","message":"user : jeanjacques@test.fr submitted a wrong signup form","service":"your-service-name","timestamp":"2023-04-04 10:16:45"}
